@@ -22,11 +22,18 @@ app.get('/', (req, res) => {
 })
 
 app.get('/wallet', function (req, res) {
+    console.log("test")
     connection.query('SELECT * FROM wallet', function (err, res) {
         if (err) {
-            console.log("error");
+            console.log(err);
         } else {
             console.log(res)
+
+            // if exists // check for any new transaction
+            
+
+
+            // if does not exist, return the latest transaction
         }
     })
 })

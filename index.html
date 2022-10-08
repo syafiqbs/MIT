@@ -162,7 +162,6 @@
         
       
       
-          <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
     <form onsubmit="preventDefault()">
         Input wallet address
         <input type="text" id="walletAddress" name="walletAddress">
@@ -170,12 +169,15 @@
     </form>
 
     <script>
-        document.getElementById("submit").addEventListener("click", callApi);
+        document.getElementById("submit").addEventListener("click", callAccountTransfers);
 
-        function callApi(){
+        function callAccountTransfers(){
             axios.get("https://hyper.solana.fm/v3/account-transfers/" + document.getElementById("walletAddress").value)
             .then(response => {
-                console.log(response.data)
+                console.log(response.data);
+                for (transactionHash in response.data){
+                    console.log(transactionHash);
+                }
             })
             .catch(error => {
                 console.log("error")
