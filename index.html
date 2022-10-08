@@ -15,7 +15,7 @@
 </head>
 </head>
 <body>
-    <form>
+    <form onsubmit="preventDefault()">
         Input wallet address
         <input type="text" id="walletAddress" name="walletAddress">
         <input type="submit" id="submit">
@@ -23,10 +23,11 @@
 
     <script>
         var submitElement = document.getElementById("submit");
+        console.log(submitElement);
         submitElement.addEventListener("click", callApi);
 
         function callApi(){
-            
+
         }
     </script>
 
