@@ -18,16 +18,15 @@
     <form onsubmit="preventDefault()">
         Input wallet address
         <input type="text" id="walletAddress" name="walletAddress">
-        <input type="submit" id="submit">
+        <input type="button" id="submit">
     </form>
 
     <script>
-        var submitElement = document.getElementById("submit");
-        console.log(submitElement);
-        submitElement.addEventListener("click", callApi);
+        document.getElementById("submit").addEventListener("click", callApi);
 
         function callApi(){
-
+            console.log("hi");
+            console.log(document.getElementById("walletAddress").value);
         }
     </script>
 
