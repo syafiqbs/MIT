@@ -170,14 +170,18 @@
 
     <script>
         document.getElementById("submit").addEventListener("click", callAccountTransfers);
-
+        
         function callAccountTransfers(){
-            axios.get("https://hyper.solana.fm/v3/account-transfers/" + document.getElementById("walletAddress").value)
+            let walletAddress = document.getElementById("walletAddress").value;
+            console.log("test");
+
+            axios.get("https://hyper.solana.fm/v3/account-transfers/" + walletAddress)
             .then(response => {
                 console.log(response.data);
                 for (transactionHash in response.data){
                     console.log(transactionHash);
                 }
+                window.location = '/wallet';
             })
             .catch(error => {
                 console.log("error")
