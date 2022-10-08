@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     
     <!-- Axios -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios@1.0.0/dist/axios.min.js"></script>
 
 </head>
 </head>
@@ -25,11 +25,17 @@
         document.getElementById("submit").addEventListener("click", callApi);
 
         function callApi(){
-            console.log("hi");
-            console.log(document.getElementById("walletAddress").value);
+            axios.get("https://hyper.solana.fm/v3/account-transfers/5LgMR5eedW6MooKdmmgJ1ztquxko4WzCuP5xKEh4xx65")
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.log("error")
+            }); 
         }
     </script>
 
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
 </html>
