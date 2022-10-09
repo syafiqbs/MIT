@@ -23,6 +23,7 @@ INSERT INTO `wallet` (`address`) VALUES
 CREATE TABLE `transaction` (
   `transaction_id` varchar(88) NOT NULL PRIMARY KEY,
   `wallet_address` varchar(44),
+  `datetime_retrieved` DATETIME DEFAULT CURRENT_TIMESTAMP(),
   FOREIGN KEY (wallet_address) REFERENCES wallet(address)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

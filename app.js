@@ -103,8 +103,39 @@ router.post('/wallet', function (req, res) {
                     "address": address
                 });  
             } else {
-                res.status(500).json({
+                res.status(422).json({
                     "message": "Failed, wallet not created"
+                });  
+            }
+        }
+    })
+});
+
+// delete 1 wallet and all transactions
+router.delete('/wallet/:address', function (req, res) {
+    // retrieve address specified in the req params
+    const address = req.params.address;
+
+    // deletes all transactions relating to wallet address
+    connection.query(`DELETE FROM transaction where wallet_address="${address}"`);
+
+    connection.query(`DELETE FROM wallet where address="${address}"`, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                "message": "Server error",
+                "error": err
+            });
+        } else {
+            if (Number(result.affectedRows) == 1) {
+                console.log(`Wallet "${address}" deleted`);
+                res.status(200).json({
+                    "message": "Success, wallet deleted",
+                    "address": address
+                });  
+            } else {
+                res.status(404).json({
+                    "message": "Failed, wallet not deleted"
                 });  
             }
         }
@@ -136,10 +167,10 @@ router.get('/transaction', function (req, res) {
     })
 });
 
-// get all transactions for 1 wallet using its address
+// get all transactions for 1 wallet using its address in descending order (latest to oldest)
 router.get('/transaction/:address', function (req, res) {
     const address = req.params.address;
-    connection.query(`SELECT transaction_id FROM transaction WHERE wallet_address='${address}'`, function (err, result) {
+    connection.query(`SELECT transaction_id, datetime_retrieved FROM transaction WHERE wallet_address='${address}' ORDER BY datetime_retrieved DESC`, function (err, result) {
         if (err) {
             console.log(err);
             res.status(500).json({
@@ -152,15 +183,14 @@ router.get('/transaction/:address', function (req, res) {
                 res.status(404).json({
                     "message": "Failed, no transaction found"
                 });
-            } else {
-                array = [];
-                for (const response of result) {
-                    array.push(response.transaction_id);
-                }
 
+                // insert new wallet into db, call solanafm api and insert into db
+                res.redirect('/dashboard')
+
+            } else {
                 res.status(200).json({
                     "message": "Success, transactions found",
-                    "transaction": array
+                    "transaction": result
                 });   
             }
         }
@@ -172,7 +202,7 @@ router.post('/transaction', function (req, res) {
     // address MUST exist in wallet table first because foreign key constraint
     const address = req.body.address;
     const transactionId = req.body.transaction_id; 
-    connection.query(`INSERT into transaction VALUES ("${transactionId}", "${address}")`, function (err, result) {
+    connection.query(`INSERT into transaction (transaction_id, wallet_address) VALUES ("${transactionId}", "${address}")`, function (err, result) {
         if (err) {
             console.log(err);
             res.status(500).json({
@@ -190,6 +220,35 @@ router.post('/transaction', function (req, res) {
             } else {
                 res.status(500).json({
                     "message": "Failed, transaction not created"
+                });  
+            }
+        }
+    })
+});
+
+// delete 1 transaction using its transaction ID
+router.delete('/transaction/:transaction_id', function (req, res) {
+    // retrieve address specified in the req params
+    const transaction_id = req.params.transaction_id;
+
+    // deletes all transactions relating to wallet address
+    connection.query(`DELETE FROM transaction where transaction_id="${transaction_id}"`, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                "message": "Server error",
+                "error": err
+            });
+        } else {
+            if (Number(result.affectedRows) == 1) {
+                console.log(`Transaction "${transaction_id}" deleted`);
+                res.status(200).json({
+                    "message": "Success, transaction deleted",
+                    "transaction_id": transaction_id
+                });  
+            } else {
+                res.status(404).json({
+                    "message": "Failed, transaction not deleted"
                 });  
             }
         }
