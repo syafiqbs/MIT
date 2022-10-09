@@ -184,11 +184,47 @@
             // return latest 5 transactions
             axios.get("https://hyper.solana.fm/v3/account-transfers/" + walletAddress)
             .then(response => {
-                console.log(response.data);
+                let sfmTransactionArr = []
                 for (transactionHash in response.data){
-                    console.log(transactionHash);
+                  sfmTransactionArr.push(transactionHash);
                 }
-                window.location = '/transaction/' + walletAddress;
+
+                // retrieve transaction from db
+                axios.get("/transaction/"+walletAddress)
+                .then(response => {
+                  let dbTransactionHashes = response.data;
+                  let dbTransactionArr = []
+                  for (dbTransactionHash of dbTransactionHashes.transaction){
+                    dbTransactionArr.push(dbTransactionHash);
+                  }
+                  console.log(dbTransactionArr);  
+                  console.log(sfmTransactionArr);
+                  
+                  for (dbTransaction of dbTransactionArr){
+                    console.log(dbTransaction)
+
+                    if ( !sfmTransactionArr.includes(dbTransaction)){
+                      
+                      console.log(walletAddress + " has a new transaction: " + dbTransaction);
+
+                      //TODO: send notification to user
+                    }
+                    else{
+                      console.log("no new transaction, keep monitoring");
+
+                      //TODO: automate and loop
+                    }
+                  }
+                })
+                .catch(error => {
+                  console.log(error.message);
+                });
+            
+            console.log(dbTransactionArr);
+            console.log(response.data);
+                
+            // if true, send notification
+
             })
             .catch(error => {
                 console.log(error.message)
@@ -198,7 +234,7 @@
         document.getElementById("submitNewWalletAddress").addEventListener("click", newWalletEntry);
         function newWalletEntry(){
           let newWalletAddress = document.getElementById("newWalletAddress").value;
-          if(newWalletAddress.length>44){
+          if (newWalletAddress.length != 44){
               alert("Please input a valid address");
           }
           newWalletAddress=newWalletAddress.replace(/[^a-z0-9]/gi,'');
@@ -224,7 +260,7 @@
                       transaction_id: transactionHash
                     })
                     .then(response => {
-                      console.log(response.data)
+                      // console.log(response.data)
                     })
                     .catch(error => {
                       console.log(error.message)
