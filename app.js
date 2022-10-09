@@ -152,6 +152,10 @@ router.get('/transaction/:address', function (req, res) {
                 res.status(404).json({
                     "message": "Failed, no transaction found"
                 });
+
+                // insert new wallet into db, call solanafm api and insert into db
+                res.redirect('/dashboard')
+
             } else {
                 array = [];
                 for (const response of result) {

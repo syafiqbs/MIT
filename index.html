@@ -160,13 +160,19 @@
       
       
     <form onsubmit="preventDefault()">
-        Input wallet address
+        Start tracking and get notification
         <input type="text" id="walletAddress" name="walletAddress">
-        <input type="button" id="submit">
+        <input type="button" id="submitWalletAddress" value="Track Wallet">
     </form>
 
+    <form onsubmit="preventDefault()">
+      Add new wallet to track
+      <input type="text" id="newWalletAddress" name="newWalletAddress">
+      <input type="button" id="submitNewWalletAddress" value="New Wallet">
+  </form>
+
     <script>
-        document.getElementById("submit").addEventListener("click", callAccountTransfers);
+        document.getElementById("submitWalletAddress").addEventListener("click", callAccountTransfers);
         
         function callAccountTransfers(){
             let walletAddress = document.getElementById("walletAddress").value;
@@ -175,13 +181,15 @@
             }
             walletAddress=walletAddress.replace(/[^a-z0-9]/gi,'');
             console.log("test");
+
+            // return latest 5 transactions
             axios.get("https://hyper.solana.fm/v3/account-transfers/" + walletAddress)
             .then(response => {
                 console.log(response.data);
                 for (transactionHash in response.data){
                     console.log(transactionHash);
                 }
-                window.location = '/wallet';
+                window.location = '/transaction/' + walletAddress;
             })
             .catch(error => {
                 console.log("error")
