@@ -198,7 +198,7 @@
         document.getElementById("submitNewWalletAddress").addEventListener("click", newWalletEntry);
         function newWalletEntry(){
           let newWalletAddress = document.getElementById("newWalletAddress").value;
-          if(newWalletAddress.length>44){
+          if (newWalletAddress.length != 44){
               alert("Please input a valid address");
           }
           newWalletAddress=newWalletAddress.replace(/[^a-z0-9]/gi,'');

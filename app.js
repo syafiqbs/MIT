@@ -255,6 +255,60 @@ router.delete('/transaction/:transaction_id', function (req, res) {
     })
 });
 
+// get all addresses tracked by 1 chat using its ID
+router.get('/chat-wallet/address/:chat_id', function (req, res) {
+    const chat_id = req.params.chat_id;
+    connection.query(`SELECT address FROM chat_wallet WHERE chat_id='${chat_id}'`, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                "message": "Server error",
+                "error": err
+            });
+        } else {
+            if (!Array.isArray(result) || !result.length) {
+                // array does not exist, is not an array, or is empty
+                res.status(404).json({
+                    "message": "Failed, no addresses found"
+                });
+
+            } else {
+                res.status(200).json({
+                    "message": "Success, addresses found",
+                    "address": result
+                });   
+            }
+        }
+    })
+});
+
+// get all chats tracking 1 wallet using its address
+router.get('/chat-wallet/chat-id/:address', function (req, res) {
+    const address = req.params.address;
+    connection.query(`SELECT chat_id FROM chat_wallet WHERE address='${address}'`, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                "message": "Server error",
+                "error": err
+            });
+        } else {
+            if (!Array.isArray(result) || !result.length) {
+                // array does not exist, is not an array, or is empty
+                res.status(404).json({
+                    "message": "Failed, no chats found"
+                });
+
+            } else {
+                res.status(200).json({
+                    "message": "Success, chats found",
+                    "chat": result
+                });   
+            }
+        }
+    })
+});
+
 app.listen(8080, function () {
     console.log('Node app is being served on port: 8080')
 })
