@@ -171,7 +171,7 @@
         function callAccountTransfers(){
             let walletAddress = document.getElementById("walletAddress").value;
             if(walletAddress.length>44){
-              prompt("Please input a valid address")
+              alert("Please input a valid address")
             }
             walletAddress=walletAddress.replace(/[^a-z0-9]/gi,'');
             console.log("test");
