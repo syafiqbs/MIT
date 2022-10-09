@@ -9,6 +9,7 @@ USE `MIT`;
 
 -- --------------------------------------------------------
 
+DROP TABLE IF EXISTS `transaction`;
 DROP TABLE IF EXISTS `wallet`;
 
 CREATE TABLE `wallet` (
@@ -16,9 +17,8 @@ CREATE TABLE `wallet` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `wallet` (`address`) VALUES
-('5LgMR5eedW6MooKdmmgJ1ztquxko4WzCuP5xKEh4xx65');
-
-DROP TABLE IF EXISTS `transaction`;
+('5LgMR5eedW6MooKdmmgJ1ztquxko4WzCuP5xKEh4xx65'),
+('G3iGKuXUdmtTQjCnkP87kL9PZBTatd4jxJLRwYTa219L');
 
 CREATE TABLE `transaction` (
   `transaction_id` varchar(88) NOT NULL PRIMARY KEY,
@@ -27,4 +27,7 @@ CREATE TABLE `transaction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `transaction` (`transaction_id`, `wallet_address`) VALUES
-('2RScjXvq5vkpkWMaShvLFdXbEKm7eNLUQRQgTtmpnbFGLaeYa8av9qP7LfY4n1rr1wZH76m3wwfAkP9eyCht3DAM', '5LgMR5eedW6MooKdmmgJ1ztquxko4WzCuP5xKEh4xx65');
+('Z1irdmWCawnLLk4bu7Vh8kx7hnr4LrXcp5oikRdY4E7CdnX7TG8boXfuFNSQppisL5fmebpt44jwrJCo1V7fLeg', '5LgMR5eedW6MooKdmmgJ1ztquxko4WzCuP5xKEh4xx65'),
+('9RYFsghmnFAaJ51XDAmLdnhJK7wfW4D1GfAFkTTaKdYzFV2VByeHNbXTBELwnazyN2BPH1Y39ca8ftJ7xjo88vQ', '5LgMR5eedW6MooKdmmgJ1ztquxko4WzCuP5xKEh4xx65'),
+('3jHKYBD1UEUFqyg2FvvofwzqZvwocru9vmbMHwf3SAD25zuTdpyfKeCpkCojDAx1Ba6kroZnrb6uf2pZDdawKXus', 'G3iGKuXUdmtTQjCnkP87kL9PZBTatd4jxJLRwYTa219L'),
+('bcw2BeGMotKMZeRSRuyBG6GZBSidYqXwd4LBEhUjFENuCMqBZL9wFtnSaMbRq4wp7e848Bs8xxDUVbSFBzqTtxu', 'G3iGKuXUdmtTQjCnkP87kL9PZBTatd4jxJLRwYTa219L');
