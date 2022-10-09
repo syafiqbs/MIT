@@ -158,17 +158,19 @@
       
         
       
-      
+    <div class="container">
     <form onsubmit="preventDefault()">
         Input wallet address
         <input type="text" id="walletAddress" name="walletAddress">
-        <input type="button" id="submit">
+        <input type="button" id="submit" value="Enter">
     </form>
-
+  </div>
+    <div class="container-fluid" id="cards">
+    </div>
     <script>
         document.getElementById("submit").addEventListener("click", callAccountTransfers);
-        
         function callAccountTransfers(){
+            let transactionStr=''
             let walletAddress = document.getElementById("walletAddress").value;
             if(walletAddress.length>44){
               alert("Please input a valid address")
@@ -179,13 +181,34 @@
             .then(response => {
                 console.log(response.data);
                 for (transactionHash in response.data){
-                    console.log(transactionHash);
+                    transactionData=response.data[transactionHash][1];
+                    var a = new Date(transactionData.timestamp * 1000);
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var sec = a.getSeconds();
+  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+                    transactionStr+=`<div class="card" style="width: 100%;">
+  <div class="card-body">
+    <h5 class="card-title">${walletAddress}</h5>
+    <p class="card-text">Token: ${transactionData.token}<br>
+      Destination: ${transactionData.destination}<br>
+      Source: ${transactionData.source}<br>
+      Amount: ${transactionData.amount}<br>
+      Date/Time: ${time}</p>
+    <a href="https://explorer.solana.com/tx/${transactionHash}" class="btn btn-primary">View Details</a>
+  </div>
+</div>`
                 }
-                window.location = '/wallet';
+                document.getElementById('cards').innerHTML=transactionStr
             })
             .catch(error => {
                 console.log("error")
             }); 
+            
         }
     </script>
 
