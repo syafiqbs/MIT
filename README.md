@@ -1,9 +1,9 @@
 # MIT
 The-Next-Gen Hackathon
 
-1. Import MIT.sql into database
+1. Import MIT.sql into MySQL database to create relevant tables
 
-2. Start up localhost environment
+2. Start up localhost environment (npm install to install the necessary packages)
 
 3. Run "app.js"
 
